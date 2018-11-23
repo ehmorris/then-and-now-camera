@@ -23,8 +23,8 @@
       object-fit: contain;
     "
   ></video>
-  <canvas
-    id="canvasElement"
+  <img
+    id="imgElement"
     style="
       position: absolute;
       left: 50%;
@@ -57,19 +57,19 @@
     }
   };
 
+  let imageCapture;
   navigator.mediaDevices.getUserMedia(constraints)
-    .then(stream =>
-      videoElement.srcObject = stream);
+    .then(stream => {
+      videoElement.srcObject = stream;
+      const track = stream.getVideoTracks()[0];
+      imageCapture = new ImageCapture(track);
+    });
 
   const captureButton = document.querySelector('#captureButton');
-  const canvas = document.querySelector('#canvasElement');
-  const context = canvas.getContext('2d');
+  const imgElement = document.querySelector('#imgElement');
 
-  captureButton.addEventListener('click', () => {
-    const width = videoElement.videoWidth;
-    const height = videoElement.videoHeight;
-    canvas.width = width;
-    canvas.height = height;
-    context.drawImage(videoElement, 0, 0, width, height);
-  });
+  captureButton.addEventListener('click', () =>
+    imageCapture.takePhoto()
+      .then(blob =>
+        imgElement.src = URL.createObjectURL(blob)));
 </script>
