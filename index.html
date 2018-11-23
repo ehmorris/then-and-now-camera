@@ -25,8 +25,6 @@
   ></video>
   <canvas
     id="canvasElement"
-    width="500"
-    height="500"
     style="
       position: absolute;
       left: 50%;
@@ -67,9 +65,11 @@
   const canvas = document.querySelector('#canvasElement');
   const context = canvas.getContext('2d');
 
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-
-  captureButton.addEventListener('click', () =>
-    context.drawImage(videoElement, 0, 0, canvas.width, canvas.height));
+  captureButton.addEventListener('click', () => {
+    const width = videoElement.videoWidth;
+    const height = videoElement.videoHeight;
+    canvas.width = width;
+    canvas.height = height;
+    context.drawImage(videoElement, 0, 0, width, height);
+  });
 </script>
