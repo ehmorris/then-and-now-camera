@@ -1,6 +1,6 @@
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 </head>
 
 <body
@@ -31,7 +31,17 @@
       top: 50%;
       transform: translate(-50%, -50%);
     "
-  ></canvas>
+  />
+  <img
+    id="imgOverlayElement"
+    style="
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      opacity: .5;
+    "
+  />
   <div
     id="captureButton"
     style="
@@ -47,6 +57,17 @@
       border: 4px solid #ccc;
     "
   ></div>
+  <input
+    id="uploadElement"
+    type="file"
+    accept="image/*"
+    style="
+      position: absolute;
+      top: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+    "
+  />
 </body>
 
 <script>
@@ -64,6 +85,12 @@
       const track = stream.getVideoTracks()[0];
       imageCapture = new ImageCapture(track);
     });
+
+  const uploadElement = document.querySelector('#uploadElement');
+  const imgOverlayElement = document.querySelector('#imgOverlayElement');
+
+  uploadElement.addEventListener('change', ({target: {files}}) =>
+    imgOverlayElement.src = URL.createObjectURL(files[0]));
 
   const captureButton = document.querySelector('#captureButton');
   const imgElement = document.querySelector('#imgElement');
