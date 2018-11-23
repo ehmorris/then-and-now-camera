@@ -20,18 +20,48 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      object-fit: fill;
+      object-fit: cover;
     "
   ></video>
+  <canvas
+    id="canvasElement"
+    width="500"
+    height="500"
+    style="
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    "
+  ></canvas>
+  <div
+    id="captureButton"
+    style="
+      position: absolute;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 80px;
+      border-radius: 80px;
+      background: #fff;
+      cursor: pointer;
+      border: 4px solid #ccc;
+    "
+  ></div>
 </body>
 
 <script>
   const videoElement = document.querySelector('#video');
 
-  navigator.mediaDevices.getUserMedia({
-    audio: true,
-    video: true
-  }).then((stream) => {
-    videoElement.srcObject = stream;
-  });
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then(stream =>
+      videoElement.srcObject = stream);
+
+  const captureButton = document.querySelector('#captureButton');
+  const canvas = document.querySelector('#canvasElement');
+  const context = canvas.getContext('2d');
+
+  captureButton.addEventListener('click', () =>
+    context.drawImage(videoElement, 0, 0, canvas.width, canvas.height));
 </script>
